@@ -13,7 +13,7 @@ if (!BOT_TOKEN || !ADMIN_ID) {
 const bot = new Telegraf(BOT_TOKEN);
 
 /* =====================
-   IMAGES
+   IMAGES (CHANGE LATER)
 ===================== */
 const IMAGES = {
   WELCOME: "https://i.imgur.com/8Km9tLL.jpg",
@@ -44,24 +44,28 @@ bot.start(async (ctx) => {
 
 📢 *OFFICIAL CHANNEL*: @hack_zone_ai
 
-Click CONTINUE to proceed.`,
+CLICK CONTINUE TO PROCEED.`,
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.callback("▶️ CONTINUE", "MENU")]
+        [Markup.button.callback("▶️ CONTINUE", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
     }
   );
 });
 
 /* =====================
-   MAIN MENU
+   MAIN MENU (EDIT MEDIA)
 ===================== */
 bot.action("MENU", async (ctx) => {
-  await ctx.replyWithPhoto(
-    IMAGES.MENU,
+  await ctx.editMessageMedia(
     {
+      type: "photo",
+      media: IMAGES.MENU,
       caption: `❓ *PLEASE SELECT YOUR QUERY*`,
-      parse_mode: "Markdown",
+      parse_mode: "Markdown"
+    },
+    {
       ...Markup.inlineKeyboard([
         [
           Markup.button.callback("💸 WITHDRAW", "WITHDRAW"),
@@ -72,45 +76,62 @@ bot.action("MENU", async (ctx) => {
           Markup.button.callback("🎟 VOUCHER", "VOUCHER")
         ],
         [Markup.button.callback("🤖 PREDICTOR BOTS", "PREDICTORS")],
-        [Markup.button.callback("🧑‍💻 LIVE SUPPORT", "SUPPORT_OPEN")]
+        [Markup.button.callback("🧑‍💻 LIVE SUPPORT", "SUPPORT_OPEN")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
     }
   );
 });
 
 /* =====================
-   SUPPORT OPEN / CLOSE
+   SUPPORT OPEN
 ===================== */
 bot.action("SUPPORT_OPEN", async (ctx) => {
   openTickets.set(ctx.from.id, true);
 
-  await ctx.replyWithPhoto(
-    IMAGES.SUPPORT,
+  await ctx.editMessageMedia(
     {
+      type: "photo",
+      media: IMAGES.SUPPORT,
       caption:
 `🧑‍💻 *LIVE SUPPORT OPEN*
 
-Send your message (text, photo or video).
-Our support team will reply shortly.`,
-      parse_mode: "Markdown",
+SEND YOUR MESSAGE (TEXT / PHOTO / VIDEO).
+OUR SUPPORT TEAM WILL REPLY SOON.`,
+      parse_mode: "Markdown"
+    },
+    {
       ...Markup.inlineKeyboard([
-        [Markup.button.callback("❌ CLOSE TICKET", "SUPPORT_CLOSE")]
+        [Markup.button.callback("❌ CLOSE TICKET", "SUPPORT_CLOSE")],
+        [Markup.button.callback("⬅️ BACK", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
     }
   );
 });
 
+/* =====================
+   SUPPORT CLOSE
+===================== */
 bot.action("SUPPORT_CLOSE", async (ctx) => {
   openTickets.delete(ctx.from.id);
 
-  await ctx.reply(
-    `✅ *YOUR SUPPORT TICKET HAS BEEN CLOSED.*`,
-    { parse_mode: "Markdown" }
+  await ctx.editMessageCaption(
+    `✅ *YOUR SUPPORT TICKET HAS BEEN CLOSED.*
+
+YOU CAN OPEN A NEW TICKET ANYTIME.`,
+    {
+      parse_mode: "Markdown",
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback("⬅️ BACK TO MENU", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
   );
 });
 
 /* =====================
-   ADMIN BUTTONS
+   ADMIN REPLY BUTTON
 ===================== */
 bot.action(/^ADMIN_REPLY_(\d+)$/, async (ctx) => {
   const userId = Number(ctx.match[1]);
@@ -118,21 +139,24 @@ bot.action(/^ADMIN_REPLY_(\d+)$/, async (ctx) => {
 
   await ctx.reply(
     `✍️ *TYPE YOUR REPLY FOR USER ID:* ${userId}`,
-    { parse_mode: "Markdown", reply_markup: { force_reply: true } }
+    {
+      parse_mode: "Markdown",
+      reply_markup: { force_reply: true }
+    }
   );
 });
 
 /* =====================
-   MESSAGE HANDLER
+   SINGLE MESSAGE HANDLER
 ===================== */
 bot.on("message", async (ctx) => {
 
   /* ADMIN MESSAGE */
   if (ctx.from.id === ADMIN_ID) {
-    const userId = adminReplyTarget.get(ctx.from.id);
-    if (!userId) return;
+    const targetUser = adminReplyTarget.get(ctx.from.id);
+    if (!targetUser) return;
 
-    await ctx.copyMessage(userId);
+    await ctx.copyMessage(targetUser);
     adminReplyTarget.delete(ctx.from.id);
     return;
   }
@@ -144,14 +168,15 @@ bot.on("message", async (ctx) => {
     caption:
 `📩 *NEW SUPPORT MESSAGE*
 
-👤 USER: ${ctx.from.first_name || "User"}
+👤 USER: ${ctx.from.first_name || "USER"}
 🆔 ID: ${ctx.from.id}`
   });
 
   await bot.telegram.sendMessage(
     ADMIN_ID,
-    "⚙️ SELECT ACTION",
+    `⚙️ *SELECT ACTION*`,
     {
+      parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [
           Markup.button.callback("✍️ REPLY TO USER", `ADMIN_REPLY_${ctx.from.id}`),
@@ -164,55 +189,107 @@ bot.on("message", async (ctx) => {
   await ctx.reply(
     `✅ *YOUR MESSAGE HAS BEEN SUCCESSFULLY SENT.*
 
-Please be patient. Our support team will reply soon.`,
+PLEASE BE PATIENT. OUR SUPPORT TEAM WILL REPLY SOON.`,
     { parse_mode: "Markdown" }
   );
 });
 
 /* =====================
-   WITHDRAW / DEPOSIT / BONUS / VOUCHER
+   INFO SECTIONS (EDIT MEDIA)
 ===================== */
 bot.action("WITHDRAW", (ctx) =>
-  ctx.replyWithPhoto(IMAGES.WITHDRAW, {
-    caption: `💸 *WITHDRAWAL PROCESS*\nLogin → Withdraw → Confirm`,
-    parse_mode: "Markdown"
-  })
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: IMAGES.WITHDRAW,
+      caption: `💸 *WITHDRAWAL PROCESS*\nLOGIN → WITHDRAW → CONFIRM`,
+      parse_mode: "Markdown"
+    },
+    {
+      ...Markup.inlineKeyboard([
+        [Markup.button.url("WITHDRAW NOW", "https://1win.com/withdrawal")],
+        [Markup.button.callback("⬅️ BACK", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
+  )
 );
 
 bot.action("DEPOSIT", (ctx) =>
-  ctx.replyWithPhoto(IMAGES.DEPOSIT, {
-    caption: `💳 *DEPOSIT FUNDS*\nUse promo code *OGGY*`,
-    parse_mode: "Markdown"
-  })
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: IMAGES.DEPOSIT,
+      caption: `💳 *MAKE A DEPOSIT*\nUSE PROMO CODE *OGGY*`,
+      parse_mode: "Markdown"
+    },
+    {
+      ...Markup.inlineKeyboard([
+        [Markup.button.url("DEPOSIT NOW", "https://1win.com/deposit")],
+        [Markup.button.callback("⬅️ BACK", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
+  )
 );
 
 bot.action("BONUS", (ctx) =>
-  ctx.replyWithPhoto(IMAGES.BONUS, {
-    caption: `🎁 *BONUS INFORMATION*\nUse bonus code *OGGY*`,
-    parse_mode: "Markdown"
-  })
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: IMAGES.BONUS,
+      caption: `🎁 *BONUS INFORMATION*\nUSE BONUS CODE *OGGY*`,
+      parse_mode: "Markdown"
+    },
+    {
+      ...Markup.inlineKeyboard([
+        [Markup.button.url("CLAIM BONUS", "https://1win.com/bonus")],
+        [Markup.button.callback("⬅️ BACK", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
+  )
 );
 
 bot.action("VOUCHER", (ctx) =>
-  ctx.replyWithPhoto(IMAGES.VOUCHER, {
-    caption: `🎟 *GET VOUCHERS*\nJoin our official channel`,
-    parse_mode: "Markdown"
-  })
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: IMAGES.VOUCHER,
+      caption: `🎟 *GET VOUCHERS*\nJOIN OUR OFFICIAL CHANNEL`,
+      parse_mode: "Markdown"
+    },
+    {
+      ...Markup.inlineKeyboard([
+        [Markup.button.url("GET VOUCHER", "https://t.me/hack_zone_ai")],
+        [Markup.button.callback("⬅️ BACK", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
+  )
 );
 
 /* =====================
    PREDICTOR BOTS
 ===================== */
 bot.action("PREDICTORS", (ctx) =>
-  ctx.replyWithPhoto(IMAGES.PREDICTORS, {
-    caption: `🤖 *PREDICTOR BOTS*`,
-    parse_mode: "Markdown",
-    ...Markup.inlineKeyboard([
-      [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/Aviator")],
-      [Markup.button.url("💣 MINES HACK", "https://t.me/mines")],
-      [Markup.button.url("👑 KING THIMBLES", "https://t.me/king")]
-    ])
-  })
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: IMAGES.PREDICTORS,
+      caption: `🤖 *PREDICTOR BOTS*`,
+      parse_mode: "Markdown"
+    },
+    {
+      ...Markup.inlineKeyboard([
+        [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/Aviator")],
+        [Markup.button.url("💣 MINES HACK", "https://t.me/mines")],
+        [Markup.button.url("👑 KING THIMBLES", "https://t.me/king")],
+        [Markup.button.callback("⬅️ BACK", "MENU")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
+  )
 );
 
 /* =====================
@@ -225,4 +302,4 @@ export default async function handler(req, res) {
     console.error(e);
   }
   res.status(200).send("OK");
-   }
+}
