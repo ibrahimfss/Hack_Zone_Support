@@ -23,15 +23,15 @@ const adminReplyTarget = new Map();   // adminId -> userId
 ===================== */
 bot.start((ctx) => {
   ctx.reply(
-    `👋 *Welcome to HACK ZONE SUPPORT*
+    `👋 *WELCOME TO HACK ZONE SUPPORT*
 
-📢 Official Channel: @hack_zone_ai
+📢 *OFFICIAL CHANNEL*: @hack_zone_ai
 
-Click START to continue`,
+Please click START to continue.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        Markup.button.callback("▶️ START", "MENU")
+        [Markup.button.callback("▶️ START", "MENU")]
       ])
     }
   );
@@ -42,74 +42,72 @@ Click START to continue`,
 ===================== */
 bot.action("MENU", async (ctx) => {
   await ctx.editMessageText(
-    `❓ *Please select your query*`,
+    `❓ *PLEASE SELECT YOUR QUERY*`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [
-          Markup.button.callback("💸 Withdraw", "WITHDRAW"),
-          Markup.button.callback("💳 Deposit", "DEPOSIT")
+          Markup.button.callback("💸 WITHDRAW", "WITHDRAW"),
+          Markup.button.callback("💳 DEPOSIT", "DEPOSIT")
         ],
         [
-          Markup.button.callback("🎁 Bonus", "BONUS"),
-          Markup.button.callback("🎟 Voucher", "VOUCHER")
+          Markup.button.callback("🎁 BONUS", "BONUS"),
+          Markup.button.callback("🎟 VOUCHER", "VOUCHER")
         ],
-        [Markup.button.callback("🧑‍💻 Live Support", "SUPPORT_OPEN")],
-        [Markup.button.url("📢 Official Channel", "https://t.me/hack_zone_ai")]
+        [Markup.button.callback("🤖 PREDICTOR BOTS", "PREDICTORS")],
+        [Markup.button.callback("🧑‍💻 LIVE SUPPORT", "SUPPORT_OPEN")],
+        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
     }
   );
 });
 
 /* =====================
-   SUPPORT OPEN
+   SUPPORT OPEN / CLOSE
 ===================== */
 bot.action("SUPPORT_OPEN", async (ctx) => {
   openTickets.set(ctx.from.id, true);
 
   await ctx.editMessageText(
-    `🧑‍💻 *LIVE SUPPORT OPEN*
+    `🧑‍💻 *LIVE SUPPORT IS NOW OPEN*
 
-Please type your message.
-Admin will reply shortly.`,
+You may send text, photos, videos or documents.
+Our support team will assist you shortly.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.callback("❌ Close Ticket", "SUPPORT_CLOSE")],
-        [Markup.button.callback("⬅️ Back", "MENU")]
+        [Markup.button.callback("❌ CLOSE TICKET", "SUPPORT_CLOSE")],
+        [Markup.button.callback("⬅️ BACK", "MENU")]
       ])
     }
   );
 });
 
-/* =====================
-   SUPPORT CLOSE (USER)
-===================== */
 bot.action("SUPPORT_CLOSE", async (ctx) => {
   openTickets.delete(ctx.from.id);
 
   await ctx.editMessageText(
-    `✅ *Support ticket closed*
+    `✅ *YOUR SUPPORT TICKET HAS BEEN CLOSED*
 
 You can open a new ticket anytime.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.callback("⬅️ Back to Menu", "MENU")]
+        [Markup.button.callback("⬅️ BACK TO MENU", "MENU")]
       ])
     }
   );
 });
 
 /* =====================
-   ADMIN BUTTONS
+   ADMIN ACTION BUTTONS
 ===================== */
 bot.action(/^ADMIN_REPLY_(\d+)$/, async (ctx) => {
   const userId = Number(ctx.match[1]);
   adminReplyTarget.set(ctx.from.id, userId);
 
   await ctx.reply(
-    `✍️ *Type your reply for User ID:* ${userId}`,
+    `✍️ *TYPE YOUR REPLY FOR USER ID:* ${userId}`,
     {
       parse_mode: "Markdown",
       reply_markup: { force_reply: true }
@@ -123,17 +121,17 @@ bot.action(/^ADMIN_CLOSE_(\d+)$/, async (ctx) => {
 
   await bot.telegram.sendMessage(
     userId,
-    `❌ *Your support ticket has been closed by admin.*
+    `❌ *YOUR SUPPORT TICKET HAS BEEN CLOSED BY OUR TEAM.*
 
-If you need help again, open a new ticket.`,
+If you need further assistance, please open a new ticket.`,
     { parse_mode: "Markdown" }
   );
 
-  await ctx.reply("✅ Ticket closed successfully.");
+  await ctx.reply("✅ TICKET CLOSED SUCCESSFULLY.");
 });
 
 /* =====================
-   SINGLE MESSAGE HANDLER (CRITICAL)
+   SINGLE MESSAGE HANDLER
 ===================== */
 bot.on("message", async (ctx) => {
 
@@ -142,22 +140,8 @@ bot.on("message", async (ctx) => {
     const targetUser = adminReplyTarget.get(ctx.from.id);
     if (!targetUser) return;
 
-    await bot.telegram.sendMessage(
-      targetUser,
-      `🧑‍💻 *Support Team Reply*
-
-━━━━━━━━━━━━━━
-${ctx.message.text}
-━━━━━━━━━━━━━━
-
-You may continue chatting or close the ticket.`,
-      {
-        parse_mode: "Markdown",
-        ...Markup.inlineKeyboard([
-          [Markup.button.callback("❌ Close Ticket", "SUPPORT_CLOSE")]
-        ])
-      }
-    );
+    // Admin can send TEXT / PHOTO / VIDEO / DOC
+    await ctx.copyMessage(targetUser);
 
     adminReplyTarget.delete(ctx.from.id);
     return;
@@ -166,29 +150,60 @@ You may continue chatting or close the ticket.`,
   /* ===== USER MESSAGE ===== */
   if (!openTickets.get(ctx.from.id)) return;
 
+  // Forward ANY content to admin
+  await ctx.copyMessage(ADMIN_ID, {
+    caption: `📩 *NEW SUPPORT MESSAGE*
+
+👤 USER: ${ctx.from.first_name || "User"}
+🆔 USER ID: ${ctx.from.id}`
+  });
+
+  // Admin action buttons
   await bot.telegram.sendMessage(
     ADMIN_ID,
-    `📩 *New Support Ticket*
-
-👤 User: ${ctx.from.first_name || "User"}
-🆔 User ID: ${ctx.from.id}
-
-━━━━━━━━━━━━━━
-${ctx.message.text}
-━━━━━━━━━━━━━━`,
+    `⚙️ *SELECT ACTION*`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [
           Markup.button.callback(
-            "✍️ Reply to User",
+            "✍️ REPLY TO USER",
             `ADMIN_REPLY_${ctx.from.id}`
           ),
           Markup.button.callback(
-            "❌ Close Ticket",
+            "❌ CLOSE TICKET",
             `ADMIN_CLOSE_${ctx.from.id}`
           )
         ]
+      ])
+    }
+  );
+
+  // ✅ USER CONFIRMATION MESSAGE
+  await ctx.reply(
+    `✅ *YOUR MESSAGE HAS BEEN SUCCESSFULLY SENT.*
+
+Please be patient. Our support team will reply as soon as possible.`,
+    { parse_mode: "Markdown" }
+  );
+});
+
+/* =====================
+   PREDICTOR BOTS
+===================== */
+bot.action("PREDICTORS", async (ctx) => {
+  await ctx.editMessageText(
+    `🤖 *PREDICTOR BOTS*`,
+    {
+      parse_mode: "Markdown",
+      ...Markup.inlineKeyboard([
+        [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/Aviator")],
+        [Markup.button.url("💣 MINES HACK", "https://t.me/mines")],
+        [Markup.button.url("👑 KING THIMBLES", "https://t.me/king")],
+        [Markup.button.url("🐔 CHICKEN ROAD", "https://t.me/chicken")],
+        [Markup.button.url("💎 MINES VIP", "https://t.me/vipmines")],
+        [Markup.button.url("🚀 AVIATOR PRO", "https://t.me/Aviatorpro")],
+        [Markup.button.callback("⬅️ BACK", "MENU")]
       ])
     }
   );
@@ -199,14 +214,14 @@ ${ctx.message.text}
 ===================== */
 bot.action("WITHDRAW", (ctx) =>
   ctx.editMessageText(
-    `💸 *Withdrawal Process*
+    `💸 *WITHDRAWAL PROCESS*
 
-Login → Withdrawal → Select method → Confirm`,
+Login → Withdrawal → Select Method → Confirm`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.url("Withdraw Now", "https://1win.com/withdrawal")],
-        [Markup.button.callback("⬅️ Back", "MENU")]
+        [Markup.button.url("WITHDRAW NOW", "https://1win.com/withdrawal")],
+        [Markup.button.callback("⬅️ BACK", "MENU")]
       ])
     }
   )
@@ -214,15 +229,14 @@ Login → Withdrawal → Select method → Confirm`,
 
 bot.action("DEPOSIT", (ctx) =>
   ctx.editMessageText(
-    `💳 *Deposit Funds*
+    `💳 *MAKE A DEPOSIT*
 
-Use promo code *OGGY*
-Get 500% Bonus`,
+Use promo code *OGGY* to get maximum bonus.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.url("Deposit Now", "https://1win.com/deposit")],
-        [Markup.button.callback("⬅️ Back", "MENU")]
+        [Markup.button.url("DEPOSIT NOW", "https://1win.com/deposit")],
+        [Markup.button.callback("⬅️ BACK", "MENU")]
       ])
     }
   )
@@ -230,15 +244,14 @@ Get 500% Bonus`,
 
 bot.action("BONUS", (ctx) =>
   ctx.editMessageText(
-    `🎁 *Bonus Offer*
+    `🎁 *BONUS INFORMATION*
 
-Use code *OGGY*
-500% Bonus + Free Spins`,
+Use bonus code *OGGY* during registration.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.url("Claim Bonus", "https://1win.com/bonus")],
-        [Markup.button.callback("⬅️ Back", "MENU")]
+        [Markup.button.url("CLAIM BONUS", "https://1win.com/bonus")],
+        [Markup.button.callback("⬅️ BACK", "MENU")]
       ])
     }
   )
@@ -246,14 +259,14 @@ Use code *OGGY*
 
 bot.action("VOUCHER", (ctx) =>
   ctx.editMessageText(
-    `🎟 *Get Vouchers*
+    `🎟 *GET VOUCHERS*
 
-Join our official channel`,
+Join our official channel to receive vouchers.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.url("Get Voucher", "https://t.me/hack_zone_ai")],
-        [Markup.button.callback("⬅️ Back", "MENU")]
+        [Markup.button.url("GET VOUCHER", "https://t.me/hack_zone_ai")],
+        [Markup.button.callback("⬅️ BACK", "MENU")]
       ])
     }
   )
