@@ -13,25 +13,41 @@ if (!BOT_TOKEN || !ADMIN_ID) {
 const bot = new Telegraf(BOT_TOKEN);
 
 /* =====================
-   MEMORY STORES
+   IMAGES
 ===================== */
-const openTickets = new Map();        // userId -> true
-const adminReplyTarget = new Map();   // adminId -> userId
+const IMAGES = {
+  WELCOME: "https://i.imgur.com/8Km9tLL.jpg",
+  MENU: "https://i.imgur.com/zYIlgBl.jpg",
+  WITHDRAW: "https://i.imgur.com/9ZQ3R0T.jpg",
+  DEPOSIT: "https://i.imgur.com/5rXkZ6K.jpg",
+  BONUS: "https://i.imgur.com/6L89KkP.jpg",
+  VOUCHER: "https://i.imgur.com/8QfGxwS.jpg",
+  SUPPORT: "https://i.imgur.com/2nCt3Sb.jpg",
+  PREDICTORS: "https://i.imgur.com/XpK8ZxU.jpg"
+};
+
+/* =====================
+   MEMORY
+===================== */
+const openTickets = new Map();
+const adminReplyTarget = new Map();
 
 /* =====================
    START
 ===================== */
-bot.start((ctx) => {
-  ctx.reply(
-    `👋 *WELCOME TO HACK ZONE SUPPORT*
+bot.start(async (ctx) => {
+  await ctx.replyWithPhoto(
+    IMAGES.WELCOME,
+    {
+      caption:
+`👋 *WELCOME TO HACK ZONE SUPPORT*
 
 📢 *OFFICIAL CHANNEL*: @hack_zone_ai
 
-Please click START to continue.`,
-    {
+Click CONTINUE to proceed.`,
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.callback("▶️ START", "MENU")]
+        [Markup.button.callback("▶️ CONTINUE", "MENU")]
       ])
     }
   );
@@ -41,9 +57,10 @@ Please click START to continue.`,
    MAIN MENU
 ===================== */
 bot.action("MENU", async (ctx) => {
-  await ctx.editMessageText(
-    `❓ *PLEASE SELECT YOUR QUERY*`,
+  await ctx.replyWithPhoto(
+    IMAGES.MENU,
     {
+      caption: `❓ *PLEASE SELECT YOUR QUERY*`,
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [
@@ -55,8 +72,7 @@ bot.action("MENU", async (ctx) => {
           Markup.button.callback("🎟 VOUCHER", "VOUCHER")
         ],
         [Markup.button.callback("🤖 PREDICTOR BOTS", "PREDICTORS")],
-        [Markup.button.callback("🧑‍💻 LIVE SUPPORT", "SUPPORT_OPEN")],
-        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+        [Markup.button.callback("🧑‍💻 LIVE SUPPORT", "SUPPORT_OPEN")]
       ])
     }
   );
@@ -68,16 +84,17 @@ bot.action("MENU", async (ctx) => {
 bot.action("SUPPORT_OPEN", async (ctx) => {
   openTickets.set(ctx.from.id, true);
 
-  await ctx.editMessageText(
-    `🧑‍💻 *LIVE SUPPORT IS NOW OPEN*
-
-You may send text, photos, videos or documents.
-Our support team will assist you shortly.`,
+  await ctx.replyWithPhoto(
+    IMAGES.SUPPORT,
     {
+      caption:
+`🧑‍💻 *LIVE SUPPORT OPEN*
+
+Send your message (text, photo or video).
+Our support team will reply shortly.`,
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
-        [Markup.button.callback("❌ CLOSE TICKET", "SUPPORT_CLOSE")],
-        [Markup.button.callback("⬅️ BACK", "MENU")]
+        [Markup.button.callback("❌ CLOSE TICKET", "SUPPORT_CLOSE")]
       ])
     }
   );
@@ -86,21 +103,14 @@ Our support team will assist you shortly.`,
 bot.action("SUPPORT_CLOSE", async (ctx) => {
   openTickets.delete(ctx.from.id);
 
-  await ctx.editMessageText(
-    `✅ *YOUR SUPPORT TICKET HAS BEEN CLOSED*
-
-You can open a new ticket anytime.`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.callback("⬅️ BACK TO MENU", "MENU")]
-      ])
-    }
+  await ctx.reply(
+    `✅ *YOUR SUPPORT TICKET HAS BEEN CLOSED.*`,
+    { parse_mode: "Markdown" }
   );
 });
 
 /* =====================
-   ADMIN ACTION BUTTONS
+   ADMIN BUTTONS
 ===================== */
 bot.action(/^ADMIN_REPLY_(\d+)$/, async (ctx) => {
   const userId = Number(ctx.match[1]);
@@ -108,168 +118,101 @@ bot.action(/^ADMIN_REPLY_(\d+)$/, async (ctx) => {
 
   await ctx.reply(
     `✍️ *TYPE YOUR REPLY FOR USER ID:* ${userId}`,
-    {
-      parse_mode: "Markdown",
-      reply_markup: { force_reply: true }
-    }
+    { parse_mode: "Markdown", reply_markup: { force_reply: true } }
   );
-});
-
-bot.action(/^ADMIN_CLOSE_(\d+)$/, async (ctx) => {
-  const userId = Number(ctx.match[1]);
-  openTickets.delete(userId);
-
-  await bot.telegram.sendMessage(
-    userId,
-    `❌ *YOUR SUPPORT TICKET HAS BEEN CLOSED BY OUR TEAM.*
-
-If you need further assistance, please open a new ticket.`,
-    { parse_mode: "Markdown" }
-  );
-
-  await ctx.reply("✅ TICKET CLOSED SUCCESSFULLY.");
 });
 
 /* =====================
-   SINGLE MESSAGE HANDLER
+   MESSAGE HANDLER
 ===================== */
 bot.on("message", async (ctx) => {
 
-  /* ===== ADMIN MESSAGE ===== */
+  /* ADMIN MESSAGE */
   if (ctx.from.id === ADMIN_ID) {
-    const targetUser = adminReplyTarget.get(ctx.from.id);
-    if (!targetUser) return;
+    const userId = adminReplyTarget.get(ctx.from.id);
+    if (!userId) return;
 
-    // Admin can send TEXT / PHOTO / VIDEO / DOC
-    await ctx.copyMessage(targetUser);
-
+    await ctx.copyMessage(userId);
     adminReplyTarget.delete(ctx.from.id);
     return;
   }
 
-  /* ===== USER MESSAGE ===== */
+  /* USER MESSAGE */
   if (!openTickets.get(ctx.from.id)) return;
 
-  // Forward ANY content to admin
   await ctx.copyMessage(ADMIN_ID, {
-    caption: `📩 *NEW SUPPORT MESSAGE*
+    caption:
+`📩 *NEW SUPPORT MESSAGE*
 
 👤 USER: ${ctx.from.first_name || "User"}
-🆔 USER ID: ${ctx.from.id}`
+🆔 ID: ${ctx.from.id}`
   });
 
-  // Admin action buttons
   await bot.telegram.sendMessage(
     ADMIN_ID,
-    `⚙️ *SELECT ACTION*`,
+    "⚙️ SELECT ACTION",
     {
-      parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [
-          Markup.button.callback(
-            "✍️ REPLY TO USER",
-            `ADMIN_REPLY_${ctx.from.id}`
-          ),
-          Markup.button.callback(
-            "❌ CLOSE TICKET",
-            `ADMIN_CLOSE_${ctx.from.id}`
-          )
+          Markup.button.callback("✍️ REPLY TO USER", `ADMIN_REPLY_${ctx.from.id}`),
+          Markup.button.callback("❌ CLOSE TICKET", `ADMIN_CLOSE_${ctx.from.id}`)
         ]
       ])
     }
   );
 
-  // ✅ USER CONFIRMATION MESSAGE
   await ctx.reply(
     `✅ *YOUR MESSAGE HAS BEEN SUCCESSFULLY SENT.*
 
-Please be patient. Our support team will reply as soon as possible.`,
+Please be patient. Our support team will reply soon.`,
     { parse_mode: "Markdown" }
   );
 });
 
 /* =====================
-   PREDICTOR BOTS
-===================== */
-bot.action("PREDICTORS", async (ctx) => {
-  await ctx.editMessageText(
-    `🤖 *PREDICTOR BOTS*`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/Aviator")],
-        [Markup.button.url("💣 MINES HACK", "https://t.me/mines")],
-        [Markup.button.url("👑 KING THIMBLES", "https://t.me/king")],
-        [Markup.button.url("🐔 CHICKEN ROAD", "https://t.me/chicken")],
-        [Markup.button.url("💎 MINES VIP", "https://t.me/vipmines")],
-        [Markup.button.url("🚀 AVIATOR PRO", "https://t.me/Aviatorpro")],
-        [Markup.button.callback("⬅️ BACK", "MENU")]
-      ])
-    }
-  );
-});
-
-/* =====================
-   INFO SECTIONS
+   WITHDRAW / DEPOSIT / BONUS / VOUCHER
 ===================== */
 bot.action("WITHDRAW", (ctx) =>
-  ctx.editMessageText(
-    `💸 *WITHDRAWAL PROCESS*
-
-Login → Withdrawal → Select Method → Confirm`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("WITHDRAW NOW", "https://1win.com/withdrawal")],
-        [Markup.button.callback("⬅️ BACK", "MENU")]
-      ])
-    }
-  )
+  ctx.replyWithPhoto(IMAGES.WITHDRAW, {
+    caption: `💸 *WITHDRAWAL PROCESS*\nLogin → Withdraw → Confirm`,
+    parse_mode: "Markdown"
+  })
 );
 
 bot.action("DEPOSIT", (ctx) =>
-  ctx.editMessageText(
-    `💳 *MAKE A DEPOSIT*
-
-Use promo code *OGGY* to get maximum bonus.`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("DEPOSIT NOW", "https://1win.com/deposit")],
-        [Markup.button.callback("⬅️ BACK", "MENU")]
-      ])
-    }
-  )
+  ctx.replyWithPhoto(IMAGES.DEPOSIT, {
+    caption: `💳 *DEPOSIT FUNDS*\nUse promo code *OGGY*`,
+    parse_mode: "Markdown"
+  })
 );
 
 bot.action("BONUS", (ctx) =>
-  ctx.editMessageText(
-    `🎁 *BONUS INFORMATION*
-
-Use bonus code *OGGY* during registration.`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("CLAIM BONUS", "https://1win.com/bonus")],
-        [Markup.button.callback("⬅️ BACK", "MENU")]
-      ])
-    }
-  )
+  ctx.replyWithPhoto(IMAGES.BONUS, {
+    caption: `🎁 *BONUS INFORMATION*\nUse bonus code *OGGY*`,
+    parse_mode: "Markdown"
+  })
 );
 
 bot.action("VOUCHER", (ctx) =>
-  ctx.editMessageText(
-    `🎟 *GET VOUCHERS*
+  ctx.replyWithPhoto(IMAGES.VOUCHER, {
+    caption: `🎟 *GET VOUCHERS*\nJoin our official channel`,
+    parse_mode: "Markdown"
+  })
+);
 
-Join our official channel to receive vouchers.`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("GET VOUCHER", "https://t.me/hack_zone_ai")],
-        [Markup.button.callback("⬅️ BACK", "MENU")]
-      ])
-    }
-  )
+/* =====================
+   PREDICTOR BOTS
+===================== */
+bot.action("PREDICTORS", (ctx) =>
+  ctx.replyWithPhoto(IMAGES.PREDICTORS, {
+    caption: `🤖 *PREDICTOR BOTS*`,
+    parse_mode: "Markdown",
+    ...Markup.inlineKeyboard([
+      [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/Aviator")],
+      [Markup.button.url("💣 MINES HACK", "https://t.me/mines")],
+      [Markup.button.url("👑 KING THIMBLES", "https://t.me/king")]
+    ])
+  })
 );
 
 /* =====================
@@ -282,4 +225,4 @@ export default async function handler(req, res) {
     console.error(e);
   }
   res.status(200).send("OK");
-}
+   }
