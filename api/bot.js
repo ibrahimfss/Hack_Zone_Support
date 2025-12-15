@@ -1,17 +1,25 @@
 import { Telegraf, Markup } from "telegraf";
 
 /* =====================
-   ENV VARIABLES
+   ENV
 ===================== */
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const ADMIN_ID = Number(process.env.ADMIN_ID);
 
-if (!BOT_TOKEN) throw new Error("BOT_TOKEN missing");
+if (!BOT_TOKEN || !ADMIN_ID) {
+  throw new Error("BOT_TOKEN or ADMIN_ID missing");
+}
 
 const bot = new Telegraf(BOT_TOKEN);
 
 /* =====================
-   START COMMAND
+   TEMP USER STORE
+   (Vercel-safe map via memory per instance)
+===================== */
+const supportUsers = new Map(); // adminMessageId -> userChatId
+
+/* =====================
+   START
 ===================== */
 bot.start((ctx) => {
   ctx.reply(
@@ -30,10 +38,10 @@ Click START to continue`,
 });
 
 /* =====================
-   QUERIES MENU
+   MAIN MENU
 ===================== */
-bot.action("OPEN_QUERIES", (ctx) => {
-  ctx.editMessageText(
+bot.action("OPEN_QUERIES", async (ctx) => {
+  await ctx.editMessageText(
     `❓ *Please select your query*`,
     {
       parse_mode: "Markdown",
@@ -57,16 +65,16 @@ bot.action("OPEN_QUERIES", (ctx) => {
 /* =====================
    WITHDRAW
 ===================== */
-bot.action("WITHDRAW", (ctx) => {
+bot.action("WITHDRAW", (ctx) =>
   ctx.editMessageText(
     `💸 *WITHDRAWAL PROCESS (1WIN)*
 
-1️⃣ Login to your account  
-2️⃣ Go to Withdrawal  
-3️⃣ Select payment method  
-4️⃣ Confirm withdrawal  
+1️⃣ Login  
+2️⃣ Withdrawal section  
+3️⃣ Select method  
+4️⃣ Confirm  
 
-⚠️ KYC must be completed`,
+⚠️ KYC required`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
@@ -74,19 +82,18 @@ bot.action("WITHDRAW", (ctx) => {
         [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
       ])
     }
-  );
-});
+  )
+);
 
 /* =====================
    DEPOSIT
 ===================== */
-bot.action("DEPOSIT", (ctx) => {
+bot.action("DEPOSIT", (ctx) =>
   ctx.editMessageText(
     `💳 *MAKE A DEPOSIT*
 
 Use promocode *OGGY*
-
-🎁 Get *500% Deposit Bonus*`,
+🎁 Get *500% Bonus*`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
@@ -94,19 +101,18 @@ Use promocode *OGGY*
         [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
       ])
     }
-  );
-});
+  )
+);
 
 /* =====================
    BONUS
 ===================== */
-bot.action("BONUS", (ctx) => {
+bot.action("BONUS", (ctx) =>
   ctx.editMessageText(
     `🎁 *EXCLUSIVE BONUS*
 
-Use bonus code *OGGY*
-
-✅ 500% Bonus  
+Code: *OGGY*
+✅ 500% Bonus
 ✅ 250 Free Spins`,
     {
       parse_mode: "Markdown",
@@ -115,13 +121,13 @@ Use bonus code *OGGY*
         [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
       ])
     }
-  );
-});
+  )
+);
 
 /* =====================
    VOUCHER
 ===================== */
-bot.action("VOUCHER", (ctx) => {
+bot.action("VOUCHER", (ctx) =>
   ctx.editMessageText(
     `🎟️ *GET EXCLUSIVE VOUCHERS*
 
@@ -133,18 +139,18 @@ Join our official channel`,
         [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
       ])
     }
-  );
-});
+  )
+);
 
 /* =====================
-   SUPPORT
+   SUPPORT MODE
 ===================== */
 bot.action("SUPPORT", async (ctx) => {
   await ctx.editMessageText(
     `🧑‍💻 *LIVE SUPPORT*
 
 Type your message below.
-Admin will reply shortly.`,
+Admin will reply directly.`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
@@ -153,22 +159,50 @@ Admin will reply shortly.`,
     }
   );
 
-  ctx.session = { support: true };
+  ctx.reply("✅ Support mode enabled. Send your message.");
+  ctx.state.support = true;
 });
 
 /* =====================
-   FORWARD USER MESSAGE TO ADMIN
+   USER → ADMIN FORWARD
 ===================== */
 bot.on("message", async (ctx) => {
-  if (ctx.session?.support) {
-    await ctx.forwardMessage(ADMIN_ID);
+  // ignore admin messages here
+  if (ctx.from.id === ADMIN_ID) return;
+
+  if (ctx.state?.support) {
+    const fwd = await ctx.forwardMessage(ADMIN_ID);
+
+    // map admin message to user
+    supportUsers.set(fwd.message_id, ctx.chat.id);
   }
+});
+
+/* =====================
+   ADMIN → USER DIRECT REPLY
+===================== */
+bot.on("message", async (ctx, next) => {
+  if (ctx.from.id !== ADMIN_ID) return next();
+
+  // admin reply must be reply-to message
+  const replyTo = ctx.message.reply_to_message;
+  if (!replyTo) return;
+
+  const userChatId = supportUsers.get(replyTo.message_id);
+  if (!userChatId) return;
+
+  // send admin reply to user
+  await bot.telegram.sendMessage(
+    userChatId,
+    `🧑‍💻 *Support Reply:*\n\n${ctx.message.text}`,
+    { parse_mode: "Markdown" }
+  );
 });
 
 /* =====================
    PREDICTOR BOTS
 ===================== */
-bot.action("PREDICTORS", (ctx) => {
+bot.action("PREDICTORS", (ctx) =>
   ctx.editMessageText(
     `🤖 *PREDICTOR BOTS*`,
     {
@@ -186,8 +220,8 @@ bot.action("PREDICTORS", (ctx) => {
         [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
       ])
     }
-  );
-});
+  )
+);
 
 /* =====================
    VERCEL HANDLER
