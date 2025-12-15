@@ -13,10 +13,11 @@ if (!BOT_TOKEN || !ADMIN_ID) {
 const bot = new Telegraf(BOT_TOKEN);
 
 /* =====================
-   TEMP USER STORE
-   (Vercel-safe map via memory per instance)
+   IN-MEMORY STORES
+   (Vercel-safe per instance)
 ===================== */
-const supportUsers = new Map(); // adminMessageId -> userChatId
+const openTickets = new Map();          // userId -> true
+const replyMap = new Map();             // adminMsgId -> userChatId
 
 /* =====================
    START
@@ -27,7 +28,7 @@ bot.start((ctx) => {
 
 📢 *Official Channel*: @hack_zone_ai
 
-Click START to continue`,
+Click *START* to continue`,
     {
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
@@ -54,9 +55,93 @@ bot.action("OPEN_QUERIES", async (ctx) => {
           Markup.button.callback("🎁 BONUS CODE", "BONUS"),
           Markup.button.callback("🎟️ VOUCHER", "VOUCHER")
         ],
-        [Markup.button.callback("🧑‍💻 SUPPORT", "SUPPORT")],
+        [Markup.button.callback("🧑‍💻 SUPPORT", "SUPPORT_OPEN")],
         [Markup.button.callback("🤖 PREDICTOR BOTS", "PREDICTORS")],
         [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
+      ])
+    }
+  );
+});
+
+/* =====================
+   SUPPORT OPEN
+===================== */
+bot.action("SUPPORT_OPEN", async (ctx) => {
+  openTickets.set(ctx.from.id, true);
+
+  await ctx.editMessageText(
+    `🧑‍💻 *LIVE SUPPORT OPEN*
+
+Please type your message.
+Admin will reply shortly.`,
+    {
+      parse_mode: "Markdown",
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback("❌ Close Ticket", "SUPPORT_CLOSE")],
+        [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
+      ])
+    }
+  );
+});
+
+/* =====================
+   SUPPORT CLOSE
+===================== */
+bot.action("SUPPORT_CLOSE", async (ctx) => {
+  openTickets.delete(ctx.from.id);
+
+  await ctx.editMessageText(
+    `✅ *Support Ticket Closed*
+
+If you need help again, open a new ticket.`,
+    {
+      parse_mode: "Markdown",
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback("⬅️ Back to Menu", "OPEN_QUERIES")]
+      ])
+    }
+  );
+});
+
+/* =====================
+   USER → ADMIN FORWARD
+===================== */
+bot.on("message", async (ctx) => {
+  // ignore admin messages here
+  if (ctx.from.id === ADMIN_ID) return;
+
+  if (!openTickets.get(ctx.from.id)) return;
+
+  const forwarded = await ctx.forwardMessage(ADMIN_ID);
+
+  replyMap.set(forwarded.message_id, ctx.chat.id);
+});
+
+/* =====================
+   ADMIN → USER DIRECT REPLY (STYLISH PANEL)
+===================== */
+bot.on("message", async (ctx, next) => {
+  if (ctx.from.id !== ADMIN_ID) return next();
+
+  const replyTo = ctx.message.reply_to_message;
+  if (!replyTo) return;
+
+  const userChatId = replyMap.get(replyTo.message_id);
+  if (!userChatId) return;
+
+  await bot.telegram.sendMessage(
+    userChatId,
+    `🧑‍💻 *Support Team Reply*
+
+━━━━━━━━━━━━━━
+${ctx.message.text}
+━━━━━━━━━━━━━━
+
+If you need more help, keep chatting or close the ticket.`,
+    {
+      parse_mode: "Markdown",
+      ...Markup.inlineKeyboard([
+        [Markup.button.callback("❌ Close Ticket", "SUPPORT_CLOSE")]
       ])
     }
   );
@@ -143,63 +228,6 @@ Join our official channel`,
 );
 
 /* =====================
-   SUPPORT MODE
-===================== */
-bot.action("SUPPORT", async (ctx) => {
-  await ctx.editMessageText(
-    `🧑‍💻 *LIVE SUPPORT*
-
-Type your message below.
-Admin will reply directly.`,
-    {
-      parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.callback("⬅️ Back", "OPEN_QUERIES")]
-      ])
-    }
-  );
-
-  ctx.reply("✅ Support mode enabled. Send your message.");
-  ctx.state.support = true;
-});
-
-/* =====================
-   USER → ADMIN FORWARD
-===================== */
-bot.on("message", async (ctx) => {
-  // ignore admin messages here
-  if (ctx.from.id === ADMIN_ID) return;
-
-  if (ctx.state?.support) {
-    const fwd = await ctx.forwardMessage(ADMIN_ID);
-
-    // map admin message to user
-    supportUsers.set(fwd.message_id, ctx.chat.id);
-  }
-});
-
-/* =====================
-   ADMIN → USER DIRECT REPLY
-===================== */
-bot.on("message", async (ctx, next) => {
-  if (ctx.from.id !== ADMIN_ID) return next();
-
-  // admin reply must be reply-to message
-  const replyTo = ctx.message.reply_to_message;
-  if (!replyTo) return;
-
-  const userChatId = supportUsers.get(replyTo.message_id);
-  if (!userChatId) return;
-
-  // send admin reply to user
-  await bot.telegram.sendMessage(
-    userChatId,
-    `🧑‍💻 *Support Reply:*\n\n${ctx.message.text}`,
-    { parse_mode: "Markdown" }
-  );
-});
-
-/* =====================
    PREDICTOR BOTS
 ===================== */
 bot.action("PREDICTORS", (ctx) =>
@@ -229,8 +257,8 @@ bot.action("PREDICTORS", (ctx) =>
 export default async function handler(req, res) {
   try {
     await bot.handleUpdate(req.body);
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error(err);
   }
   res.status(200).send("OK");
-}
+         }
