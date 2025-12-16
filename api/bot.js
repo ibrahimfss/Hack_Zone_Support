@@ -339,23 +339,42 @@ bot.action("BONUS", (ctx) =>
   )
 );
 
-bot.action("VOUCHER", (ctx) =>
-  ctx.editMessageMedia(
+bot.action("VOUCHER", async (ctx) => {
+  await ctx.editMessageCaption(
+`🎟️ <b>1WIN VOUCHERS & PROMO CODES</b>
+
+<i>Get exclusive 1win voucher codes to boost your balance and maximize rewards.</i>
+
+━━━━━━━━━━━━━━━━━━
+📌 <b>HOW TO GET DAILY VOUCHERS</b>
+━━━━━━━━━━━━━━━━━━
+• Join our <a href="https://t.me/hack_zone_ai"><b>Official Telegram Channel</b></a><br>
+• Daily voucher codes are shared only in the channel<br>
+• Vouchers are limited and available for a short time<br>
+• Codes are valid for eligible users only
+
+━━━━━━━━━━━━━━━━━━
+⚠️ <b>IMPORTANT NOTICE</b>
+━━━━━━━━━━━━━━━━━━
+• Vouchers are provided by <a href="https://t.me/hack_zone_ai"><b>Official Channel</b></a> sources only<br>
+• Each voucher may have specific terms and conditions<br>
+• Expired or already-used vouchers cannot be reused
+
+Join the <a href="https://t.me/hack_zone_ai"><b>Official Channel</b></a> now to receive daily voucher codes.
+
+Click <b>GET VOUCHER</b> to proceed.`,
     {
-      type: "photo",
-      media: IMAGES.VOUCHER,
-      caption: `🎟 *GET VOUCHERS*\nJOIN OUR OFFICIAL CHANNEL`,
-      parse_mode: "Markdown"
-    },
-    {
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("GET VOUCHER", "https://t.me/hack_zone_ai")],
-        [Markup.button.callback("⬅️ BACK", "MENU")],
-        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
-      ])
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "🎟️ GET VOUCHER", url: "https://t.me/hack_zone_ai" }],
+          [{ text: "⬅️ BACK", callback_data: "MENU" }],
+          [{ text: "📢 OFFICIAL CHANNEL", url: "https://t.me/hack_zone_ai" }]
+        ]
+      }
     }
-  )
-);
+  );
+});
 
 /* =====================
    PREDICTOR BOTS
