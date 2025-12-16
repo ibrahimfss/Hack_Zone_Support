@@ -184,7 +184,7 @@ bot.action(/^ADMIN_CLOSE_(\d+)$/, async (ctx) => {
   // Notify user
   await bot.telegram.sendMessage(
     userId,
-`❌ <b>YOUR SUPPORT TICKET HAS BEEN CLOSED BY ADMIN</b>
+`❌ <b>YOUR SUPPORT TICKET HAS BEEN CLOSED BY SUPPORT TEAM</b>
 
 <i>If you need more help, you can open a new ticket anytime.</i>`,
     { parse_mode: "HTML" }
