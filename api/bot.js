@@ -213,8 +213,8 @@ PLEASE BE PATIENT. OUR SUPPORT TEAM WILL REPLY SOON.`,
 bot.action("WITHDRAW", (ctx) =>
   ctx.editMessageMedia(
     {
-      type: "photo",
-      media: IMAGES.WITHDRAW,
+      type: "video",
+      media: VIDEOS.WITHDRAW,
       caption:
 `💸 *WITHDRAWAL INFORMATION*
 
@@ -259,8 +259,8 @@ Click *WITHDRAW NOW* to proceed.`,
 bot.action("DEPOSIT", (ctx) =>
   ctx.editMessageMedia(
     {
-      type: "photo",
-      media: IMAGES.DEPOSIT,
+      type: "video",
+      media: VIDEOS.DEPOSIT,
       caption: `💳 *MAKE A DEPOSIT*\nUSE PROMO CODE *OGGY*`,
       parse_mode: "Markdown"
     },
