@@ -45,9 +45,8 @@ bot.start(async (ctx) => {
 You have successfully reached *HACK ZONE SUPPORT* 🛠️  
 Our team is here to assist you with all official support-related queries.
 
-// COMMON CLICKABLE CHANNEL LINK
 ━━━━━━━━━━━━━━━━━━
-📢 var CH = "🔗 [Join Official Channel](https://t.me/hack_zone_ai)";
+📢 *t.me/+rOuALeM_WaQzODU1*
 ━━━━━━━━━━━━━━━━━━
 
 To continue and access support options, please click the *CONTINUE* button below.
