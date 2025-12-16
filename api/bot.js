@@ -36,6 +36,8 @@ const adminReplyTarget = new Map();
    START
 ===================== */
 bot.start(async (ctx) => {
+  const firstName = ctx.from.first_name || "User";
+
   await ctx.replyWithPhoto(
     IMAGES.WELCOME,
     {
