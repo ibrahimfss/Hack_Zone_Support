@@ -340,7 +340,9 @@ bot.action("BONUS", (ctx) =>
 );
 
 bot.action("VOUCHER", async (ctx) => {
-  await ctx.editMessageCaption(
+  await ctx.answerCbQuery();
+
+  await ctx.editMessageText(
 `🎟️ <b>1WIN VOUCHERS & PROMO CODES</b>
 
 <i>Get exclusive 1win voucher codes to boost your balance and maximize rewards.</i>
@@ -348,16 +350,16 @@ bot.action("VOUCHER", async (ctx) => {
 ━━━━━━━━━━━━━━━━━━
 📌 <b>HOW TO GET DAILY VOUCHERS</b>
 ━━━━━━━━━━━━━━━━━━
-• Join our <a href="https://t.me/hack_zone_ai"><b>Official Telegram Channel</b></a><br>
-• Daily voucher codes are shared only in the channel<br>
-• Vouchers are limited and available for a short time<br>
+• Join our <a href="https://t.me/hack_zone_ai"><b>Official Telegram Channel</b></a>
+• Daily voucher codes are shared only in the channel
+• Vouchers are limited and available for a short time
 • Codes are valid for eligible users only
 
 ━━━━━━━━━━━━━━━━━━
 ⚠️ <b>IMPORTANT NOTICE</b>
 ━━━━━━━━━━━━━━━━━━
-• Vouchers are provided by <a href="https://t.me/hack_zone_ai"><b>Official Channel</b></a> sources only<br>
-• Each voucher may have specific terms and conditions<br>
+• Vouchers are provided by <a href="https://t.me/hack_zone_ai"><b>Official Channel</b></a> sources only
+• Each voucher may have specific terms and conditions
 • Expired or already-used vouchers cannot be reused
 
 Join the <a href="https://t.me/hack_zone_ai"><b>Official Channel</b></a> now to receive daily voucher codes.
