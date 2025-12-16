@@ -24,8 +24,8 @@ const IMAGES = {
   PREDICTORS: "https://i.imgur.com/XpK8ZxU.jpg"
 };
 const VIDEOS = {
-  WITHDRAW: "https://t.me/your_private_channel/12",
-  DEPOSIT: "https://t.me/your_private_channel/15"
+  WITHDRAW: "https://t.me/c/3581193117/2",
+  DEPOSIT: "https://t.me/c/3581193117/3"
 };
 
 /* =====================
