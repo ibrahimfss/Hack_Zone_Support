@@ -40,11 +40,17 @@ bot.start(async (ctx) => {
     IMAGES.WELCOME,
     {
       caption:
-`👋 *WELCOME TO HACK ZONE SUPPORT*
+`👋 *WELCOME, {first_name}!*
 
-📢 *OFFICIAL CHANNEL*: @hack_zone_ai
+You have successfully reached *HACK ZONE SUPPORT* 🛠️  
+Our team is here to assist you with all official support-related queries.
 
-CLICK CONTINUE TO PROCEED.`,
+━━━━━━━━━━━━━━━━━━
+📢 *OFFICIAL CHANNEL*
+👉 @hack_zone_ai
+━━━━━━━━━━━━━━━━━━
+
+To continue and access support options, please click the *CONTINUE* button below.`,
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [Markup.button.callback("▶️ CONTINUE", "MENU")],
