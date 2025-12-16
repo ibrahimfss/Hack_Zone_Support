@@ -40,7 +40,7 @@ bot.start(async (ctx) => {
     IMAGES.WELCOME,
     {
       caption:
-`👋 *WELCOME, {{first_name}}!*
+`👋 *WELCOME, {{firstname}}!*
 
 You have successfully reached *HACK ZONE SUPPORT* 🛠️  
 Our team is here to assist you with all official support-related queries.
