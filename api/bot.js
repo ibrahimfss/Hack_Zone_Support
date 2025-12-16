@@ -280,7 +280,7 @@ bot.action("DEPOSIT", (ctx) =>
 ‎━━━━━━━━━━━━━━━━━━
 ‎🎁 *BONUS & PROMOCODE*
 ‎━━━━━━━━━━━━━━━━━━
-‎• Enter the correct *promocode* \`OGGY\` during Registration to receive *500% deposit bonuses*  
+‎• Enter the correct *promocode* \`OGGY\` during Registration to receive *600% deposit bonuses*  
 ‎• Bonuses are subject to wagering requirements  
 ‎• Incorrect or missing promocode may void the bonus
 ‎
@@ -309,7 +309,24 @@ bot.action("BONUS", (ctx) =>
     {
       type: "photo",
       media: IMAGES.BONUS,
-      caption: `🎁 *BONUS INFORMATION*\nUSE BONUS CODE *OGGY*`,
+      caption: `‎🎁 *EXCLUSIVE DEPOSIT BONUS*
+‎
+‎_Use the special promocode below during registration & deposit to unlock your bonus:_
+‎
+‎━━━━━━━━━━━━━━━━━━
+‎🎯 *PROMOCODE:* \`OGGY\`
+‎💥 *BONUS: GET UP TO 600%*
+‎━━━━━━━━━━━━━━━━━━
+‎
+‎📌 *IMPORTANT:*
+‎• Promocode must be entered before confirming the registration or deposit 
+‎• Bonus is applicable on eligible deposits only  
+‎• Bonus funds are subject to wagering requirements  
+‎• One bonus per user / per account
+‎
+‎Deposit now and maximize your winning potential.
+‎
+‎Click *CLAIM BONUS* to proceed.`,
       parse_mode: "Markdown"
     },
     {
