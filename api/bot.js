@@ -280,7 +280,7 @@ bot.action("DEPOSIT", (ctx) =>
 ‎━━━━━━━━━━━━━━━━━━
 ‎🎁 *BONUS & PROMOCODE*
 ‎━━━━━━━━━━━━━━━━━━
-‎• Enter the correct *promocode OGGY* during Registration to receive 500% bonuses  
+‎• Enter the correct *promocode* *OGGY* during Registration to receive 500% bonuses  
 ‎• Bonuses are subject to wagering requirements  
 ‎• Incorrect or missing promocode may void the bonus
 ‎
