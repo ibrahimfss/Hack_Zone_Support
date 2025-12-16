@@ -18,12 +18,14 @@ const bot = new Telegraf(BOT_TOKEN);
 const IMAGES = {
   WELCOME: "https://www.canva.com/design/DAG7pDLb09s/Cyyeg0YkySJBZU_nGawakQ/view?utm_content=DAG7pDLb09s&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h12f6f44082",
   MENU: "https://i.imgur.com/zYIlgBl.jpg",
-  WITHDRAW: "https://drive.google.com/file/d/1y-oc8TrDu229W37rOL7EbNcrs-rM-bh3/view?usp=drivesdk",
-  DEPOSIT: "https://i.imgur.com/5rXkZ6K.jpg",
   BONUS: "https://i.imgur.com/6L89KkP.jpg",
   VOUCHER: "https://i.imgur.com/8QfGxwS.jpg",
   SUPPORT: "https://i.imgur.com/2nCt3Sb.jpg",
   PREDICTORS: "https://i.imgur.com/XpK8ZxU.jpg"
+};
+const VIDEOS = {
+  WITHDRAW: "https://t.me/your_private_channel/12",
+  DEPOSIT: "https://t.me/your_private_channel/15"
 };
 
 /* =====================
