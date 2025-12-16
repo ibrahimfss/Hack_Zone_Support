@@ -24,7 +24,7 @@ const IMAGES = {
   PREDICTORS: "https://i.imgur.com/XpK8ZxU.jpg"
 };
 const VIDEOS = {
-  WITHDRAW: "",
+  WITHDRAW: "BAACAgUAAxkBAAE_TZBpQQZc-sMNBCXlke1YOu7qzG8JiQACrxsAArK4CFbi5xvH1oAHUzYE",
   DEPOSIT: "BAACAgUAAxkBAAE_TaJpQQmxESqpxdndUCAAAW9klvnE1SwAArAbAAKyuAhW21yLxSAAARvyNgQ"
 };
 
