@@ -213,23 +213,47 @@ bot.action("WITHDRAW", (ctx) =>
     {
       type: "photo",
       media: IMAGES.WITHDRAW,
-      caption: `‎💸 *1WIN WITHDRAWAL INFORMATION*‎\nWithdrawals on 1win are processed securely and transparently through the official system.\n‎━━━━━━━━━━━━━━━━━━\n‎📌 *IMPORTANT WITHDRAWAL RULES*\n‎━━━━━━━━━━━━━━━━━━\n‎• Withdrawal is available only after completing account verification  
-‎• The minimum withdrawal amount depends on the selected payment method  
-‎• Ensure your payment details are correct before submitting a request  
-‎• Withdrawals are processed only to the same method used for deposit\n‎━━━━━━━━━━━━━━━━━━\n‎⏳ *PROCESSING TIME*\n‎━━━━━━━━━━━━━━━━━━\n‎• E-wallets / UPI: Usually within 5–30 minutes  
-‎• Bank transfer: Up to 24 hours  
-‎• In rare cases, verification may take additional time\n‎━━━━━━━━━━━━━━━━━━\n‎⚠️ *IMPORTANT NOTICE*\n‎━━━━━━━━━━━━━━━━━━\n‎• Use only your own payment details  
-‎• Do not attempt multiple withdrawals at the same time  
-‎• Any violation of 1win terms may result in withdrawal delay or rejection\n‎If your withdrawal is pending, please remain patient.  
-‎For account-specific issues, contact official 1win support only.\n‎Click *WITHDRAW NOW* to proceed.`,
+      caption:
+`💸 *1WIN WITHDRAWAL INFORMATION*
+
+Withdrawals on 1win are processed securely and transparently through the official system.
+
+━━━━━━━━━━━━━━━━━━
+📌 *IMPORTANT WITHDRAWAL RULES*
+━━━━━━━━━━━━━━━━━━
+• Withdrawal is available only after completing account verification  
+• The minimum withdrawal amount depends on the selected payment method  
+• Ensure your payment details are correct before submitting a request  
+• Withdrawals are processed only to the same method used for deposit
+
+━━━━━━━━━━━━━━━━━━
+⏳ *PROCESSING TIME*
+━━━━━━━━━━━━━━━━━━
+• E-wallets / UPI: Usually within 5–30 minutes  
+• Bank transfer: Up to 24 hours  
+• In rare cases, verification may take additional time
+
+━━━━━━━━━━━━━━━━━━
+⚠️ *IMPORTANT NOTICE*
+━━━━━━━━━━━━━━━━━━
+• Use only your own payment details  
+• Do not attempt multiple withdrawals at the same time  
+• Any violation of 1win terms may result in withdrawal delay or rejection
+
+If your withdrawal is pending, please remain patient.  
+For account-specific issues, contact official 1win support only.
+
+Click *WITHDRAW NOW* to proceed.`,
       parse_mode: "Markdown"
     },
     {
-      ...Markup.inlineKeyboard([
-        [Markup.button.url("WITHDRAW NOW", "https://1win.com/withdrawal")],
-        [Markup.button.callback("⬅️ BACK", "MENU")],
-        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
-      ])
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "💸 WITHDRAW NOW", url: "https://1win.com/withdrawal" }],
+          [{ text: "⬅️ BACK", callback_data: "MENU" }],
+          [{ text: "📢 OFFICIAL CHANNEL", url: "https://t.me/hack_zone_ai" }]
+        ]
+      }
     }
   )
 );
