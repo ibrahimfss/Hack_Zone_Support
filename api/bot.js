@@ -342,7 +342,7 @@ bot.action("BONUS", (ctx) =>
 bot.action("VOUCHER", async (ctx) => {
   await ctx.answerCbQuery();
 
-  await ctx.editMessageText(
+  await ctx.editMessageCaption(
 `🎟️ <b>1WIN VOUCHERS & PROMO CODES</b>
 
 <i>Get exclusive 1win voucher codes to boost your balance and maximize rewards.</i>
