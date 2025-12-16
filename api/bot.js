@@ -386,7 +386,7 @@ bot.action("PREDICTORS", (ctx) =>
     {
       type: "photo",
       media: IMAGES.PREDICTORS,
-      caption: `🤖 *PREDICTOR BOTS*`,
+      caption: `🤖 Boost your earnings by using the Predictor & Hack bots below and increase your winning chances.`,
       parse_mode: "Markdown"
     },
     {
