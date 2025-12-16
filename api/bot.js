@@ -16,7 +16,7 @@ const bot = new Telegraf(BOT_TOKEN);
    IMAGES (CHANGE LATER)
 ===================== */
 const IMAGES = {
-  WELCOME: "https://i.imghippo.com/files/cGqm1124Upo.jpg",
+  WELCOME: "https://i.imgur.com/zYIlgBl.jpg",
   MENU: "https://i.imgur.com/zYIlgBl.jpg",
   WITHDRAW: "https://i.imgur.com/9ZQ3R0T.jpg",
   DEPOSIT: "https://i.imgur.com/5rXkZ6K.jpg",
