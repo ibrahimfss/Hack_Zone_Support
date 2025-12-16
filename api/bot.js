@@ -226,7 +226,8 @@ bot.action("WITHDRAW", (ctx) =>
 ━━━━━━━━━━━━━━━━━━
 ⏳ *PROCESSING TIME*
 ━━━━━━━━━━━━━━━━━━
-• E-wallets / UPI: Usually within 5–30 minutes  
+• E-wallets / UPI: Usually within 
+5–30 minutes  
 • Bank transfer: Up to 24 hours
 
 ━━━━━━━━━━━━━━━━━━
@@ -236,7 +237,7 @@ bot.action("WITHDRAW", (ctx) =>
 • Do not attempt multiple withdrawals at the same time  
 • Any violation of 1win terms may result in withdrawal delay or rejection
 
-If your withdrawal is pending, please remain patient.
+_If your withdrawal is pending, please remain patient._
 
 Click *WITHDRAW NOW* to proceed.`,
       parse_mode: "Markdown"
