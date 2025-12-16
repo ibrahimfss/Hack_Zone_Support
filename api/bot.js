@@ -102,23 +102,35 @@ bot.action("MENU", async (ctx) => {
 bot.action("SUPPORT_OPEN", async (ctx) => {
   openTickets.set(ctx.from.id, true);
 
-  await ctx.editMessageMedia(
-    {
-      type: "photo",
-      media: IMAGES.SUPPORT,
-      caption:
-`🧑‍💻 *LIVE SUPPORT OPEN*
+  await ctx.editMessageCaption(
+`👨‍💻 <b>LIVE SUPPORT IS NOW OPEN</b>
 
-SEND YOUR MESSAGE (TEXT / PHOTO / VIDEO).
-OUR SUPPORT TEAM WILL REPLY SOON.`,
-      parse_mode: "Markdown"
-    },
+<i>You can send your message below.</i>  
+<i>Supported formats: Text, Photo, Video.</i>
+
+━━━━━━━━━━━━━━━━━━
+📌 <b>WHAT HAPPENS NEXT</b>
+━━━━━━━━━━━━━━━━━━
+• <i>Your message has been received by our support system</i>  
+• <i>A support agent will review your request</i>  
+• <i>You will receive a reply as soon as possible</i>
+
+━━━━━━━━━━━━━━━━━━
+⚠️ <b>IMPORTANT NOTES</b>
+━━━━━━━━━━━━━━━━━━
+• <i>Please describe your issue clearly for faster assistance</i>  
+• <i>Do not send duplicate messages</i>  
+• <i>Response time may vary depending on queue volume</i>
+
+<b>To end this session, click <u>CLOSE TICKET</u>.</b>`,
     {
-      ...Markup.inlineKeyboard([
-        [Markup.button.callback("❌ CLOSE TICKET", "SUPPORT_CLOSE")],
-        [Markup.button.callback("⬅️ BACK", "MENU")],
-        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
-      ])
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "❌ CLOSE TICKET", callback_data: "SUPPORT_CLOSE" }],
+          [{ text: "⬅️ BACK", callback_data: "MENU" }]
+        ]
+      }
     }
   );
 });
