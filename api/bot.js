@@ -46,14 +46,15 @@ You have successfully reached *HACK ZONE SUPPORT* 🛠️
 Our team is here to assist you with all official support-related queries.
 
 ━━━━━━━━━━━━━━━━━━
-📢 *t.me/+rOuALeM_WaQzODU1*
+📢 *OFFICIAL CHANNEL*
+👉 @hackzoneai
 ━━━━━━━━━━━━━━━━━━
 
 To continue and access support options, please click the *CONTINUE* button below.
 
-⚠️ *Important:*
-• Trust only official updates 
-• Support replies may take some time.`,
+⚠️ *Important Notes:*
+• Only trust updates from our official channel 
+• Support replies may take some time — please be patient.`,
       parse_mode: "Markdown",
       ...Markup.inlineKeyboard([
         [Markup.button.callback("▶️ CONTINUE", "MENU")],
