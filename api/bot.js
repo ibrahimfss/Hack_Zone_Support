@@ -173,6 +173,31 @@ bot.action(/^ADMIN_REPLY_(\d+)$/, async (ctx) => {
 });
 
 /* =====================
+   ADMIN CLOSE TICKET
+===================== */
+bot.action(/^ADMIN_CLOSE_(\d+)$/, async (ctx) => {
+  const userId = Number(ctx.match[1]);
+
+  // Remove ticket from memory
+  openTickets.delete(userId);
+
+  // Notify user
+  await bot.telegram.sendMessage(
+    userId,
+`❌ <b>YOUR SUPPORT TICKET HAS BEEN CLOSED BY ADMIN</b>
+
+<i>If you need more help, you can open a new ticket anytime.</i>`,
+    { parse_mode: "HTML" }
+  );
+
+  // Confirm to admin
+  await ctx.editMessageText(
+    `✅ <b>TICKET CLOSED SUCCESSFULLY</b>\n\nUser ID: <code>${userId}</code>`,
+    { parse_mode: "HTML" }
+  );
+});
+
+/* =====================
    SINGLE MESSAGE HANDLER
 ===================== */
 bot.on("message", async (ctx) => {
