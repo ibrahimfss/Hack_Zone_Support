@@ -261,7 +261,37 @@ bot.action("DEPOSIT", (ctx) =>
     {
       type: "video",
       media: VIDEOS.DEPOSIT,
-      caption: `💳 *MAKE A DEPOSIT*\nUSE PROMO CODE *OGGY*`,
+      caption: 
+`‎💳 *1WIN DEPOSIT INFORMATION*
+‎
+‎━━━━━━━━━━━━━━━━━━
+‎📌 *IMPORTANT DEPOSIT RULES*
+‎━━━━━━━━━━━━━━━━━━
+‎• Deposits must be made only from your own payment method  
+‎• The minimum deposit amount depends on the selected payment option  
+‎• Always check the deposit amount before confirming payment 
+‎
+‎━━━━━━━━━━━━━━━━━━
+‎⚡ *DEPOSIT PROCESSING TIME*
+‎━━━━━━━━━━━━━━━━━━
+‎• UPI / E-wallets: Instant to a few minutes  
+‎• Bank transfer: May take up to 15–30 minutes 
+‎
+‎━━━━━━━━━━━━━━━━━━
+‎🎁 *BONUS & PROMOCODE*
+‎━━━━━━━━━━━━━━━━━━
+‎• Enter the correct *promocode* 'OGGY' during deposit to receive 500% bonuses  
+‎• Bonuses are subject to wagering requirements  
+‎• Incorrect or missing promocode may void the bonus
+‎
+‎━━━━━━━━━━━━━━━━━━
+‎⚠️ *IMPORTANT NOTICE*
+‎━━━━━━━━━━━━━━━━━━
+‎_• Do not close the app or refresh the page during payment  
+‎• Save the transaction ID until the balance is credited  
+‎• For failed deposits, contact official 1win support only_
+‎
+‎Click *DEPOSIT NOW* to proceed.`,
       parse_mode: "Markdown"
     },
     {
