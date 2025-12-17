@@ -104,11 +104,7 @@ bot.action("MENU", async (ctx) => {
 bot.action("SUPPORT_OPEN", async (ctx) => {
   openTickets.set(ctx.from.id, true);
 
-  await ctx.editMessageMedia(
-    {
-      type: "photo",
-      media: IMAGES.SUPPORT,
-      caption:
+  await ctx.editMessageCaption(
 `👨‍💻 <b>LIVE SUPPORT IS NOW OPEN</b>
 
 <i>You can send your message below.</i>  
