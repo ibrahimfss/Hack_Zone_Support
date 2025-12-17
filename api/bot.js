@@ -16,7 +16,7 @@ const bot = new Telegraf(BOT_TOKEN);
    IMAGES (CHANGE LATER)
 ===================== */
 const IMAGES = {
-  WELCOME: "https://www.canva.com/design/DAG7pDLb09s/Cyyeg0YkySJBZU_nGawakQ/view?utm_content=DAG7pDLb09s&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h12f6f44082",
+  WELCOME: "AgACAgUAAxkBAAE_WPJpQlcRHHCFBKbXeo4mOMx5E59GgwACEwxrG4RIEVaxzAABBCYIytgBAAMCAAN3AAM2BA",
   MENU: "AgACAgUAAxkBAAE_V7JpQisvyupOWN12rCB5KISHqdpYqgACoAtrG4RIEVYZJFfTHbvZywEAAwIAA3cAAzYE",
   BONUS: "https://t.me/hostvideobotm/5",
   VOUCHER: "AgACAgUAAxkBAAE_V_RpQjU-ysbhZR86qF66G6wPmExXQgACtwtrG4RIEVZjwbr-ZJWTbQEAAwIAA3cAAzYE",
