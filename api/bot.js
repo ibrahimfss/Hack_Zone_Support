@@ -353,7 +353,7 @@ bot.action("BONUS", (ctx) =>
 ‎
 ‎━━━━━━━━━━━━━━━━━━
 ‎🎯 *PROMOCODE:* \`OGGY\`
-‎💥 *BONUS: GET UP TO 600%*
+‎💥 *BONUS: GET UP TO 600%*\n+500 Free Spins
 ‎━━━━━━━━━━━━━━━━━━
 ‎
 ‎📌 *IMPORTANT:*
