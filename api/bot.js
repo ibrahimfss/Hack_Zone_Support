@@ -56,13 +56,15 @@ Our team is here to assist you with all official support-related queries.
 To continue and access support options, please click the *CONTINUE* button below.
 
 ⚠️ *Important Notes:*
-• Only trust updates from our official channel 
+• Only trust updates from our official channel  
 • Support replies may take some time — please be patient.`,
       parse_mode: "Markdown",
-      ...Markup.inlineKeyboard([
-        [Markup.button.callback("▶️ CONTINUE", "MENU")],
-        [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
-      ])
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: "▶️ CONTINUE", callback_data: "MENU" }],
+          [{ text: "📢 OFFICIAL CHANNEL", url: "https://t.me/hack_zone_ai" }]
+        ]
+      }
     }
   );
 });
