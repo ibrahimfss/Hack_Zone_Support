@@ -291,7 +291,7 @@ Click *WITHDRAW NOW* to proceed.`,
     {
       reply_markup: {
         inline_keyboard: [
-          [{ text: "💸 WITHDRAW NOW", url: "https://1win.com/withdrawal" }],
+          [{ text: "💸 WITHDRAW NOW", url: "https://lkxw.cc/6706" }],
           [{ text: "⬅️ BACK", callback_data: "MENU" }],
           [{ text: "📢 OFFICIAL CHANNEL", url: "https://t.me/hack_zone_ai" }]
         ]
@@ -340,7 +340,7 @@ bot.action("DEPOSIT", (ctx) =>
     },
     {
       ...Markup.inlineKeyboard([
-        [Markup.button.url("DEPOSIT NOW", "https://1win.com/deposit")],
+        [Markup.button.url("DEPOSIT NOW", "https://lkxw.cc/6706")],
         [Markup.button.callback("⬅️ BACK", "MENU")],
         [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
@@ -375,7 +375,7 @@ bot.action("BONUS", (ctx) =>
     },
     {
       ...Markup.inlineKeyboard([
-        [Markup.button.url("CLAIM BONUS", "https://1win.com/bonus")],
+        [Markup.button.url("CLAIM BONUS", "https://lkxw.cc/6706")],
         [Markup.button.callback("⬅️ BACK", "MENU")],
         [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
