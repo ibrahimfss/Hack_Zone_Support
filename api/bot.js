@@ -20,7 +20,7 @@ const IMAGES = {
   MENU: "AgACAgUAAxkBAAE_V7JpQisvyupOWN12rCB5KISHqdpYqgACoAtrG4RIEVYZJFfTHbvZywEAAwIAA3cAAzYE",
   BONUS: "https://t.me/hostvideobotm/5",
   VOUCHER: "AgACAgUAAxkBAAE_V_RpQjU-ysbhZR86qF66G6wPmExXQgACtwtrG4RIEVZjwbr-ZJWTbQEAAwIAA3cAAzYE",
-  SUPPORT: "https://t.me/hostvideobotm/6",
+  SUPPORT: "AgACAgUAAxkBAAE_WCZpQjxEMKZY_iWH6aXWHahe3K3D0QACwwtrG4RIEVa44l5Q-wFxEwEAAwIAA3cAAzYE",
   PREDICTORS: "https://i.imgur.com/XpK8ZxU.jpg"
 };
 const VIDEOS = {
@@ -104,7 +104,11 @@ bot.action("MENU", async (ctx) => {
 bot.action("SUPPORT_OPEN", async (ctx) => {
   openTickets.set(ctx.from.id, true);
 
-  await ctx.editMessageCaption(
+  await ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: IMAGES.SUPPORT, // ✅ SUPPORT IMAGE WILL SHOW NOW
+      caption:
 `👨‍💻 <b>LIVE SUPPORT IS NOW OPEN</b>
 
 <i>You can send your message below.</i>  
