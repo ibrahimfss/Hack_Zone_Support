@@ -440,9 +440,9 @@ bot.action("PREDICTORS", (ctx) =>
     },
     {
       ...Markup.inlineKeyboard([
-        [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/Aviator")],
-        [Markup.button.url("💣 MINES HACK", "https://t.me/mines")],
-        [Markup.button.url("👑 KING THIMBLES", "https://t.me/king")],
+        [Markup.button.url("✈️ AVIATOR HACK", "https://t.me/aviator_predict_vipbot?start=ar1465380042")],
+        [Markup.button.url("💣 MINES HACK", "https://t.me/Mines_hacke_bot?start=ar1465380042")],
+        [Markup.button.url("👑 KING THIMBLES", "https://t.me/King_thimblesbot?start=ar1465380042")],
         [Markup.button.callback("⬅️ BACK", "MENU")],
         [Markup.button.url("📢 OFFICIAL CHANNEL", "https://t.me/hack_zone_ai")]
       ])
