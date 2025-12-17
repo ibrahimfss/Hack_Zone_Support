@@ -127,11 +127,11 @@ bot.action("SUPPORT_OPEN", async (ctx) => {
 • <i>Please describe your issue clearly for faster assistance</i>  
 • <i>Do not send duplicate messages</i>  
 • <i>Response time may vary depending on queue volume</i>
-• <i>Describe your issues our support team helpes you soon as possible</i>
 
 <b>To end this session, click <u>CLOSE TICKET</u>.</b>`,
+      parse_mode: "HTML"
+    },
     {
-      parse_mode: "HTML",
       reply_markup: {
         inline_keyboard: [
           [{ text: "❌ CLOSE TICKET", callback_data: "SUPPORT_CLOSE" }],
