@@ -353,24 +353,7 @@ bot.action("BONUS", (ctx) =>
     {
       type: "photo",
       media: IMAGES.BONUS,
-      caption: `‎🎁 *EXCLUSIVE DEPOSIT BONUS*
-‎
-‎_Use the special promocode below during registration & deposit to unlock your bonus:_
-‎
-‎━━━━━━━━━━━━━━━━━━
-‎🎯 *PROMOCODE:* \`ASAAKIRA\`
-‎💥 *BONUS: GET UP TO 600%*\n+500 Free Spins
-‎━━━━━━━━━━━━━━━━━━
-‎
-‎📌 *IMPORTANT:*
-‎• Promocode must be entered before confirming the registration or deposit 
-‎• Bonus is applicable on eligible deposits only  
-‎• Bonus funds are subject to wagering requirements  
-‎• One bonus per user / per account
-‎
-‎Deposit now and maximize your winning potential.
-‎
-‎Click *CLAIM BONUS* to proceed.`,
+      caption: bonusCaption: `🎁 *EXCLUSIVE DEPOSIT BONUS*\n\n_Express bonus - when making an express bet with 5 or more events, a percentage of the winning amount is added to the net profit._\n\nUse the special promocode \`ASAAKIRA\` during registration & deposit to unlock your bonuses.\n\n━━━━━━━━━━━━━━━━━━\n💱 *CASHBACK*\n━━━━━━━━━━━━━━━━━━\n• Cashback up to 30% at the casino - return up to 30% of your losses per week.\n━━━━━━━━━━━━━━━━━━\n🎁 *BONUSES*\n━━━━━━━━━━━━━━━━━━\n• Bonuses up to *500%* - welcome bonuses on the first 4 deposits.\n\n• Bonuses up to *600%* - welcome bonuses for the first 4 deposits in cryptocurrency.\n\n━━━━━━━━━━━━━━━━━━\n🎯 BONUS CODE: \`ASAAKIRA\`\n━━━━━━━━━━━━━━━━━━\n\n📌 *IMPORTANT:*\n• *Promocode* \`ASAAKIRA\` must be entered before confirming the registration or deposit\n• Bonus is applicable on eligible deposits only\n\nYou can find out more about all promotions and bonuses by following *CLAIM BONUS* button.\n\n_Deposit now and maximize your winning potential._\n\nClick *CLAIM BONUS* to proceed.`,
       parse_mode: "Markdown"
     },
     {
