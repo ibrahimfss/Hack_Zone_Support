@@ -272,9 +272,9 @@ bot.action("WITHDRAW", (ctx) =>
 ━━━━━━━━━━━━━━━━━━
 ⏳ *PROCESSING TIME*
 ━━━━━━━━━━━━━━━━━━
-• E-wallets / UPI: Usually within 
+• Crypto currency / UPI: Usually within 
 5–30 minutes  
-• Bank transfer: Up to 24 hours
+• Bank transfer IMPS: Up to 12 hours
 
 ━━━━━━━━━━━━━━━━━━
 ⚠️ *IMPORTANT NOTICE*
@@ -318,13 +318,13 @@ bot.action("DEPOSIT", (ctx) =>
 ‎━━━━━━━━━━━━━━━━━━
 ‎⚡ *DEPOSIT PROCESSING TIME*
 ‎━━━━━━━━━━━━━━━━━━
-‎• UPI / E-wallets: Instant to a few minutes  
+‎• UPI / Crypto: Instant to a few minutes  
 ‎• Bank transfer: May take up to 15–30 minutes 
 ‎
 ‎━━━━━━━━━━━━━━━━━━
 ‎🎁 *BONUS & PROMOCODE*
 ‎━━━━━━━━━━━━━━━━━━
-‎• Enter the correct *promocode* \`OGGY\` during Registration to receive *600% deposit bonuses*  
+‎• Enter the correct *promocode* \`ASAAKIRA\` during Registration to receive *600% deposit bonuses*  
 ‎• Bonuses are subject to wagering requirements  
 ‎• Incorrect or missing promocode may void the bonus
 ‎
@@ -358,7 +358,7 @@ bot.action("BONUS", (ctx) =>
 ‎_Use the special promocode below during registration & deposit to unlock your bonus:_
 ‎
 ‎━━━━━━━━━━━━━━━━━━
-‎🎯 *PROMOCODE:* \`OGGY\`
+‎🎯 *PROMOCODE:* \`ASAAKIRA\`
 ‎💥 *BONUS: GET UP TO 600%*\n+500 Free Spins
 ‎━━━━━━━━━━━━━━━━━━
 ‎
