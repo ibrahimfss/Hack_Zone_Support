@@ -62,7 +62,7 @@ bot.start(async (ctx) => {
   await ctx.replyWithPhoto(
     IMAGES.WELCOME,
     {
-      caption:
+      caption: 
 `👋 *WELCOME, ${firstName}!*
 
 You have successfully reached *HACK ZONE SUPPORT* 🛠️  
@@ -127,8 +127,7 @@ bot.action("SUPPORT_OPEN", async (ctx) => {
     {
       type: "photo",
       media: IMAGES.SUPPORT, // ✅ SUPPORT IMAGE WILL SHOW NOW
-      caption:
-`👨‍💻 <b>LIVE SUPPORT IS NOW OPEN</b>
+      caption: `👨‍💻 <b>LIVE SUPPORT IS NOW OPEN</b>
 
 <i>You can send your message below.</i>  
 <i>Supported formats: Text, Photo, Video.</i>
@@ -278,8 +277,7 @@ bot.action("WITHDRAW", (ctx) =>
     {
       type: "video",
       media: VIDEOS.WITHDRAW,
-      caption:
-`💸 *WITHDRAWAL INFORMATION*
+      caption: `💸 *WITHDRAWAL INFORMATION*
 
 ━━━━━━━━━━━━━━━━━━
 📌 *IMPORTANT WITHDRAWAL RULES*
@@ -324,8 +322,7 @@ bot.action("DEPOSIT", (ctx) =>
     {
       type: "video",
       media: VIDEOS.DEPOSIT,
-      caption: 
-`‎💳 *1WIN DEPOSIT INFORMATION*
+      caption: `‎💳 *1WIN DEPOSIT INFORMATION*
 ‎
 ‎━━━━━━━━━━━━━━━━━━
 ‎📌 *IMPORTANT DEPOSIT RULES*
@@ -392,8 +389,7 @@ bot.action("VOUCHER", async (ctx) => {
     {
       type: "photo",
       media: IMAGES.VOUCHER, // ✅ THIS FIXES THE ISSUE
-      caption:
-`🎟️ <b>1WIN VOUCHERS & PROMO CODES</b>
+      caption: `🎟️ <b>1WIN VOUCHERS & PROMO CODES</b>
 
 <i>Get exclusive 1win voucher codes to boost your balance and maximize rewards.</i>
 
