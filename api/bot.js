@@ -72,7 +72,7 @@ Our team is here to assist you with all official support-related queries.
 📢 *https://t.me/+rOuALeM_WaQzODU1*
 ━━━━━━━━━━━━━━━━━━
 
-To continue and access support options, please click the *CONTINUE* button below.
+To continue and access ibrahim support options, please click the *CONTINUE* button below.
 
 ⚠️ *Important Notes:*
 • Only trust updates from our official channel  
