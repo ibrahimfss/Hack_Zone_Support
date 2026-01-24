@@ -15,20 +15,31 @@ const bot = new Telegraf(BOT_TOKEN);
 bot.on("photo", async (ctx) => {
   if (ctx.from.id !== ADMIN_ID) return;
   const photo = ctx.message.photo.pop();
-  console.log("PHOTO FILE_ID:", photo.file_id);
+  console.log("📷 PHOTO FILE_ID:", photo.file_id);
   await ctx.reply("Photo Saved ✔️ Check Vercel Logs");
 });
 
 bot.on("video", async (ctx) => {
   if (ctx.from.id !== ADMIN_ID) return;
-  console.log("VIDEO FILE_ID:", ctx.message.video.file_id);
+  console.log("🎥 VIDEO FILE_ID:", ctx.message.video.file_id);
   await ctx.reply("Video Saved ✔️ Check Vercel Logs");
 });
 
 bot.on("animation", async (ctx) => {
   if (ctx.from.id !== ADMIN_ID) return;
-  console.log("GIF FILE_ID:", ctx.message.animation.file_id);
+  console.log("🎬 GIF FILE_ID:", ctx.message.animation.file_id);
   await ctx.reply("GIF Saved ✔️ Check Vercel Logs");
+});
+
+// NEW: Document Handler for APK files
+bot.on("document", async (ctx) => {
+  if (ctx.from.id !== ADMIN_ID) return;
+  const document = ctx.message.document;
+  console.log("📄 DOCUMENT FILE_ID:", document.file_id);
+  console.log("📄 FILE NAME:", document.file_name);
+  console.log("📄 FILE SIZE:", document.file_size);
+  console.log("📄 MIME TYPE:", document.mime_type);
+  await ctx.reply(`📄 Document Saved ✔️\nFile ID: ${document.file_id}\nName: ${document.file_name}\nSize: ${document.file_size} bytes\nCheck Vercel Logs`);
 });
 
 /* =====================
